@@ -4,7 +4,6 @@
 module Language.Haskell.TH.Jailbreak
   ( lbiQ
   , eval
-  , jailbreak
   ) where
 
 import Control.Concurrent
@@ -17,7 +16,6 @@ import qualified Data.ByteString.Lazy as LBS
 import qualified Data.ByteString.Unsafe as BS
 import Data.Foldable
 import qualified Data.Map as M
-import Data.Proxy
 import Distribution.Simple
 import Distribution.Simple.Configure
 import Distribution.Simple.LocalBuildInfo
@@ -125,8 +123,3 @@ eval m = do
           r <- unsafeCoerce <$> GHC.compileParsedExpr e
           liftIO $ putMVar chan $! r
         takeMVar chan
-
-jailbreak :: Lift a => proxy a -> Q Exp -> Q Exp
-jailbreak p m = do
-  r <- eval m
-  lift $ r `asProxyTypeOf` p

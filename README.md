@@ -2,22 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/TerrorJack/template-haskell-jailbreak/tree/master.svg?style=shield)](https://circleci.com/gh/TerrorJack/template-haskell-jailbreak/tree/master)
 
-Black magic to workaround the Template Haskell stage restriction. Work in progress. Doesn't work on Windows yet.
+Black magic to workaround a Template Haskell stage restriction. Doesn't work on Windows yet.
 
-## Black magic No.1
-
-Retrieve `LocalBuildInfo` in a Template Haskell splice. No need for custom `Setup.hs` script!
-
-```haskell
-{-# LANGUAGE TemplateHaskell #-}
-
-import Language.Haskell.TH.Jailbreak
-
-main :: IO ()
-main = print $(lbiQ)
-```
-
-## Black magic No.2
+## Demo
 
 Evaluate any Template Haskell `Exp`, any time you want.
 
@@ -36,10 +23,38 @@ main =
          lift (r :: Int))
 ```
 
-With `eval` and `lift`, you are granted the power of `jailbreak`ing:
+With `eval`, you are granted the power of jailbreaking. Here comes one example usage: Suppose you want to query the `Storable` instance of a `Type` and calculate its size via calling `sizeOf`. You need something like:
 
 ```haskell
-jailbreak :: Lift a => proxy a -> Q Exp -> Q Exp
+sizeOfType :: Type -> Q Int
 ```
 
-If some stage restriction error pops up with an expression splice, just `jailbreak` it.
+After obtaining the `sizeOfType` result in the `Q` monad, you can generate subsequent `Dec`s you need. What would its implementation look like?
+
+```haskell
+sizeOfType :: Type -> Q Int
+sizeOfType t = pure $([| sizeOf undefined :: $(pure t) |])
+```
+
+Unfortunately `ghc` is protesting:
+
+```
+    * GHC stage restriction:
+        `t' is used in a top-level splice, quasi-quote, or annotation,
+        and must be imported, not defined locally
+    * In the untyped splice: $(pure t)
+      In the Template Haskell quotation
+        [| sizeOf undefined :: $(pure t) |]
+      In the untyped splice: $([| sizeOf undefined :: $(pure t) |])
+```
+
+It's time to jailbreak!
+
+```haskell
+sizeOfType :: Type -> Q Int
+sizeOfType t = eval [| sizeOf undefined :: $(pure t) |]
+```
+
+This version works.
+
+There's probably more idiomatic way to achieve this though, do tell me if something ain't right..

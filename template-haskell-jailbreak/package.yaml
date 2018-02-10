@@ -19,7 +19,6 @@ dependencies:
   - binary
   - bytestring
   - Cabal
-  - deepseq
   - template-haskell
 
 when:

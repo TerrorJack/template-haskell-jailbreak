@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-import Language.Haskell.TH.Jailbreak.Internals
+import Language.Haskell.TH.Jailbreak
 import Language.Haskell.TH.Syntax
 
 main :: IO ()

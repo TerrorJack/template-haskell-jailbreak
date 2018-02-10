@@ -11,7 +11,7 @@ Retrieve `LocalBuildInfo` in a Template Haskell splice. No need for custom `Setu
 ```haskell
 {-# LANGUAGE TemplateHaskell #-}
 
-import Language.Haskell.TH.Jailbreak.Internals
+import Language.Haskell.TH.Jailbreak
 
 main :: IO ()
 main = print $(lbiQ)
@@ -19,14 +19,14 @@ main = print $(lbiQ)
 
 ## Black magic No.2
 
-Evaluate any Template Haskell `Exp`, any time you want. With `eval` & `lift`, you are granted the power of jailbreaking.
+Evaluate any Template Haskell `Exp`, any time you want.
 
 ```haskell
 -- eval :: Q Exp -> Q a
 
 {-# LANGUAGE TemplateHaskell #-}
 
-import Language.Haskell.TH.Jailbreak.Internals
+import Language.Haskell.TH.Jailbreak
 import Language.Haskell.TH.Syntax
 
 main :: IO ()
@@ -35,3 +35,11 @@ main =
     $(do r <- eval [|2 + 2 :: Int|]
          lift (r :: Int))
 ```
+
+With `eval` and `lift`, you are granted the power of `jailbreak`ing:
+
+```haskell
+jailbreak :: Lift a => proxy a -> Q Exp -> Q Exp
+```
+
+If some stage restriction error pops up with an expression splice, just `jailbreak` it.

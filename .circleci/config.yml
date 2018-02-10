@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: terrorjack/vanilla:haskell
+    steps:
+      - checkout
+      - restore_cache:
+          key: stack-work-
+      - run: stack --no-terminal build --haddock
+      - save_cache:
+          key: stack-work-{{ .BuildNum }}
+          paths:
+            - /root/.stack
+            - .stack-work

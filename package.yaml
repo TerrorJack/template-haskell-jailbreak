@@ -1,0 +1,24 @@
+name: template-haskell-jailbreak
+version: 0.0.1
+category: Development
+stability: alpha
+maintainer: Shao Cheng <astrohavoc@gmail.com>
+copyright: (c) 2018 Shao Cheng
+license: BSD3
+github: TerrorJack/template-haskell-jailbreak
+
+extra-source-files:
+  - LICENSE
+  - README.md
+  - CHANGELOG.md
+
+ghc-options: -Wall
+
+dependencies:
+  - base
+  - ghc
+  - ghc-paths
+  - template-haskell
+
+library:
+  source-dirs: src

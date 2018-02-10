@@ -16,9 +16,15 @@ ghc-options: -Wall
 
 dependencies:
   - base
-  - ghc
-  - ghc-paths
-  - template-haskell
+
+when:
+  - condition: os(windows)
+    then:
+      c-sources: cbits/pargs-win32.c
+    else:
+      c-sources: cbits/pargs-unix.c
+
+cc-options: -std=c11 -Wall -Wextra -O2 -fPIC
 
 library:
   source-dirs: src

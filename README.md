@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/TerrorJack/template-haskell-jailbreak/tree/master.svg?style=shield)](https://circleci.com/gh/TerrorJack/template-haskell-jailbreak/tree/master)
 
-Black magic to workaround the Template Haskell stage restriction. Work in progress.
+Black magic to workaround the Template Haskell stage restriction. Work in progress. Doesn't work on Windows yet.
 
 ## Black magic No.1
 
@@ -16,8 +16,6 @@ import Language.Haskell.TH.Jailbreak.Internals
 main :: IO ()
 main = print $(lbiQ)
 ```
-
-Doesn't work on Windows yet.
 
 ## Black magic No.2
 

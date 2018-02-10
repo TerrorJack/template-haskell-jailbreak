@@ -19,4 +19,19 @@ main = print $(lbiQ)
 
 ## Black magic No.2
 
-Run Template Haskell splice within a Template Haskell splice, which can be arbitrarily nested. WIP
+Evaluate any Template Haskell `Exp`, any time you want. With `eval` & `lift`, you are granted the power of jailbreaking.
+
+```haskell
+-- eval :: Q Exp -> Q a
+
+{-# LANGUAGE TemplateHaskell #-}
+
+import Language.Haskell.TH.Jailbreak.Internals
+import Language.Haskell.TH.Syntax
+
+main :: IO ()
+main =
+  print
+    $(do r <- eval [|2 + 2 :: Int|]
+         lift (r :: Int))
+```

@@ -5,10 +5,12 @@ module Language.Haskell.TH.Jailbreak.Internals
   ( lbiQ
   , newGHCiSession
   , getGHCiSession
+  , eval
   ) where
 
 import Control.Concurrent
 import Control.Monad.IO.Class
+import qualified Convert as GHC
 import Data.Binary
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as CBS
@@ -25,7 +27,9 @@ import Foreign
 import Foreign.C
 import qualified GHC
 import Language.Haskell.TH.Syntax
+import qualified Outputable as GHC
 import System.IO.Unsafe
+import Unsafe.Coerce
 
 foreign import ccall unsafe "pargs" c_pargs :: Ptr () -> IO CInt
 
@@ -107,3 +111,17 @@ getGHCiSession = do
       addModFinalizer $ runIO f
       putQ s
       pure s
+
+eval :: Q Exp -> Q a
+eval m = do
+  e' <- m
+  case GHC.convertToHsExpr GHC.noSrcSpan e' of
+    Left err -> fail $ GHC.showSDocUnsafe err
+    Right e -> do
+      s <- getGHCiSession
+      runIO $ do
+        chan <- newEmptyMVar
+        s $ do
+          r <- unsafeCoerce <$> GHC.compileParsedExpr e
+          liftIO $ putMVar chan $! r
+        takeMVar chan

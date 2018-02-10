@@ -4,6 +4,7 @@
 module Language.Haskell.TH.Jailbreak.Internals
   ( lbiQ
   , newGHCiSession
+  , getGHCiSession
   ) where
 
 import Control.Concurrent
@@ -95,3 +96,14 @@ newGHCiSession lbi = do
               _ -> pure ()
        in w
   pure (putMVar chan . Just, putMVar chan Nothing)
+
+getGHCiSession :: Q (GHC.Ghc () -> IO ())
+getGHCiSession = do
+  m <- getQ
+  case m of
+    Just s -> pure s
+    _ -> do
+      (s, f) <- runIO $ getLBI >>= newGHCiSession
+      addModFinalizer $ runIO f
+      putQ $ Just s
+      pure s

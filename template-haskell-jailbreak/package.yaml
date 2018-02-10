@@ -16,7 +16,9 @@ ghc-options: -Wall
 
 dependencies:
   - base
+  - binary
   - bytestring
+  - Cabal
   - deepseq
   - template-haskell
 
@@ -27,3 +29,6 @@ when:
 
 library:
   source-dirs: src
+  other-extensions:
+    - OverloadedStrings
+    - TemplateHaskell

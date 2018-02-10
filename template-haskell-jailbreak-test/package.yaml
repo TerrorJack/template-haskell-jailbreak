@@ -11,3 +11,5 @@ dependencies:
 tests:
   andy:
     main: andy.hs
+    other-extensions:
+      - TemplateHaskell

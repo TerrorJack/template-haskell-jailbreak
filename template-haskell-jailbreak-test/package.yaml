@@ -5,6 +5,7 @@ ghc-options: -Wall
 
 dependencies:
   - base
+  - ghc
   - template-haskell-jailbreak
 
 tests:

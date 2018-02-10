@@ -84,7 +84,9 @@ ghcLibDir lbi = compilerProperties (compiler lbi) M.! "LibDir"
 newGHCiSession :: LocalBuildInfo -> IO (GHC.Ghc () -> IO (), IO ())
 newGHCiSession lbi = do
   chan <- newEmptyMVar
-  GHC.defaultErrorHandler GHC.defaultFatalMessager GHC.defaultFlushOut $
+  _ <-
+    forkIO $
+    GHC.defaultErrorHandler GHC.defaultFatalMessager GHC.defaultFlushOut $
     GHC.runGhc (Just $ ghcLibDir lbi) $ do
       dflags <- GHC.getSessionDynFlags
       _ <- GHC.setSessionDynFlags dflags

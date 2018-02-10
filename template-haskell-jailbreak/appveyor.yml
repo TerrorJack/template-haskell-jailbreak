@@ -7,6 +7,7 @@ image: Visual Studio 2017
 cache:
   - "%APPDATA%\\stack"
   - .stack-work
+  - "template-haskell-jailbreak\\.stack-work"
 
 build_script:
   - choco install haskell-stack
@@ -14,6 +15,6 @@ build_script:
   - stack --no-terminal --skip-msys setup > NUL
   - mklink /D %LOCALAPPDATA%\\Programs\\stack\\x86_64-windows\\msys2-20161025 C:\\msys64
   - copy %LOCALAPPDATA%\\Programs\\stack\\x86_64-windows\\ghc-8.2.2.installed %LOCALAPPDATA%\\Programs\\stack\\x86_64-windows\\msys2-20161025.installed
-  - stack --no-terminal build --haddock
+  - stack --no-terminal build template-haskell-jailbreak --haddock
 
 test: off

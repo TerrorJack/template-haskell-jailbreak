@@ -19,6 +19,7 @@ dependencies:
   - binary
   - bytestring
   - Cabal
+  - containers
   - ghc
   - template-haskell
 

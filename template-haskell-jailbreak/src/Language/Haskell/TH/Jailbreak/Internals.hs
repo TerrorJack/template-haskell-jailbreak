@@ -4,14 +4,19 @@
 module Language.Haskell.TH.Jailbreak.Internals
   ( lbiQ
   , adjustDynFlags
+  , ghcLibDir
+  , newGHCiSession
   ) where
 
+import Control.Concurrent
+import Control.Monad.IO.Class
 import Data.Binary
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as CBS
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.ByteString.Unsafe as BS
 import Data.Foldable
+import qualified Data.Map as M
 import Distribution.Simple
 import Distribution.Simple.Configure
 import Distribution.Simple.LocalBuildInfo
@@ -19,6 +24,7 @@ import Distribution.Simple.Setup
 import qualified DynFlags as GHC
 import Foreign
 import Foreign.C
+import qualified GHC
 import Language.Haskell.TH.Syntax
 import System.IO.Unsafe
 
@@ -71,3 +77,21 @@ adjustDynFlags lbi dflags =
                 | all isSpecific dbs -> GHC.NoUserPackageDB : fmap single dbs
               dbs -> GHC.ClearPackageDBs : fmap single dbs
     }
+
+ghcLibDir :: LocalBuildInfo -> FilePath
+ghcLibDir lbi = compilerProperties (compiler lbi) M.! "LibDir"
+
+newGHCiSession :: LocalBuildInfo -> IO (GHC.Ghc () -> IO (), IO ())
+newGHCiSession lbi = do
+  chan <- newEmptyMVar
+  GHC.defaultErrorHandler GHC.defaultFatalMessager GHC.defaultFlushOut $
+    GHC.runGhc (Just $ ghcLibDir lbi) $ do
+      dflags <- GHC.getSessionDynFlags
+      _ <- GHC.setSessionDynFlags dflags
+      let w = do
+            m' <- liftIO $ takeMVar chan
+            case m' of
+              Just m -> m *> w
+              _ -> pure ()
+       in w
+  pure (putMVar chan . Just, putMVar chan Nothing)

@@ -16,15 +16,17 @@ ghc-options: -Wall
 
 dependencies:
   - base
+  - bytestring
+  - deepseq
+  - template-haskell
 
 when:
-  - condition: os(windows)
-    then:
-      c-sources: cbits/pargs-win32.c
-    else:
-      c-sources: cbits/pargs-unix.c
-
-cc-options: -std=c11 -Wall -Wextra -O2 -fPIC
+  - condition: os(linux)
+    c-sources: cbits/pargs-unix.c
+    cc-options: -std=c11 -Wall -Wextra -O2 -fPIC
 
 library:
   source-dirs: src
+  other-extensions:
+    - TemplateHaskell
+

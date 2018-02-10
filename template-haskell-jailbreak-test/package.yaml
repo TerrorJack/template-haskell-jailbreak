@@ -1,0 +1,13 @@
+name: template-haskell-jailbreak-test
+version: 0.0.1
+
+ghc-options: -Wall
+
+dependencies:
+  - base
+  - template-haskell
+  - template-haskell-jailbreak
+
+tests:
+  andy:
+    main: andy.hs

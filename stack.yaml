@@ -1,3 +1,4 @@
 resolver: ghc-8.2.2
 packages:
   - template-haskell-jailbreak
+  - template-haskell-jailbreak-test

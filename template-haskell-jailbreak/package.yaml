@@ -9,7 +9,7 @@ github: TerrorJack/template-haskell-jailbreak
 
 extra-source-files:
   - LICENSE
-  - README.md
+  - ../README.md
   - CHANGELOG.md
 
 ghc-options: -Wall
@@ -27,6 +27,3 @@ when:
 
 library:
   source-dirs: src
-  other-extensions:
-    - TemplateHaskell
-

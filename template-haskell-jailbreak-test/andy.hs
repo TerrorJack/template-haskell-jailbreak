@@ -1,11 +1,11 @@
 {-# LANGUAGE TemplateHaskell #-}
 
+import Foreign
 import Language.Haskell.TH.Jailbreak
 import Language.Haskell.TH.Syntax
-import Foreign
 
 sizeOfType :: Type -> Q Int
-sizeOfType t = eval [| sizeOf undefined :: $(pure t) |]
+sizeOfType t = eval [|sizeOf (undefined :: $(pure t))|]
 
 main :: IO ()
 main =

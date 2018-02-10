@@ -52,7 +52,7 @@ It's time to jailbreak!
 
 ```haskell
 sizeOfType :: Type -> Q Int
-sizeOfType t = eval [| sizeOf undefined :: $(pure t) |]
+sizeOfType t = eval [|sizeOf (undefined :: $(pure t))|]
 ```
 
 This version works.

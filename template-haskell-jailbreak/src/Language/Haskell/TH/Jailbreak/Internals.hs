@@ -2,7 +2,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 module Language.Haskell.TH.Jailbreak.Internals
-  ( newGHCiSession
+  ( lbiQ
+  , newGHCiSession
   ) where
 
 import Control.Concurrent

@@ -9,7 +9,7 @@ jobs:
           key: stack-work-
       - run: |
           stack --no-terminal build template-haskell-jailbreak --haddock
-          stack --no-terminal test template-haskell-jailbreak:andy
+          stack --no-terminal test template-haskell-jailbreak-test:andy
       - save_cache:
           key: stack-work-{{ .BuildNum }}
           paths:

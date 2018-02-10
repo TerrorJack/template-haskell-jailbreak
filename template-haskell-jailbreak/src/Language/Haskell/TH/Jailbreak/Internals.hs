@@ -105,5 +105,5 @@ getGHCiSession = do
     _ -> do
       (s, f) <- runIO $ getLBI >>= newGHCiSession
       addModFinalizer $ runIO f
-      putQ $ Just s
+      putQ s
       pure s

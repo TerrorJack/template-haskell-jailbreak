@@ -15,6 +15,6 @@ main = do
       [GHC.IIDecl $ GHC.simpleImportDecl $ GHC.mkModuleName "Prelude"]
     r <- unsafeCoerce <$> GHC.compileExpr "2+2 :: Int"
     liftIO $ putMVar chan $! r
-  g
   r <- takeMVar chan
+  g
   print (r :: Int)

@@ -86,7 +86,7 @@ newGHCiSession lbi = do
     GHC.defaultErrorHandler GHC.defaultFatalMessager GHC.defaultFlushOut $
     GHC.runGhc (Just $ ghcLibDir lbi) $ do
       dflags <- GHC.getSessionDynFlags
-      _ <- GHC.setSessionDynFlags $ adjustDynFlags dflags
+      _ <- GHC.setSessionDynFlags $ adjustDynFlags lbi dflags
       let w = do
             m' <- liftIO $ takeMVar chan
             case m' of

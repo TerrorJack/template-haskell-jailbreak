@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <alloca.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
 
 int pargs(void *argv) {

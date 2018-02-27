@@ -6,12 +6,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: stack-work-
+          key: stack-work-gen2-
       - run: |
           stack --no-terminal build template-haskell-jailbreak --haddock
           stack --no-terminal test template-haskell-jailbreak-test:andy
       - save_cache:
-          key: stack-work-{{ .BuildNum }}
+          key: stack-work-gen2-{{ .BuildNum }}
           paths:
             - /root/.stack
             - .stack-work

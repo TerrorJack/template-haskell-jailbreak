@@ -18,6 +18,7 @@ dependencies:
   - base
   - binary
   - ghc
+  - ghc-paths
   - process
   - template-haskell
 

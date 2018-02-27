@@ -8,9 +8,9 @@ module Language.Haskell.TH.Jailbreak
 import Control.Concurrent
 import Control.Monad.IO.Class
 import qualified Convert as GHC
-import Data.Char
 import qualified DynFlags as GHC
 import qualified GHC
+import qualified GHC.Paths as GHC
 import Language.Haskell.TH.Syntax
 import qualified Outputable as GHC
 import System.Environment
@@ -25,12 +25,10 @@ data GHCProperties = GHCProperties
 getGHCProperties :: IO GHCProperties
 getGHCProperties = do
   ghc_path <- getExecutablePath
-  ghc_libdir <-
-    takeWhile (not . isSpace) <$> readProcess ghc_path ["--print-libdir"] ""
   ghc_flags <- getArgs
   pure
     GHCProperties
-      {ghcPath = ghc_path, ghcLibDir = ghc_libdir, ghcFlags = ghc_flags}
+      {ghcPath = ghc_path, ghcLibDir = GHC.libdir, ghcFlags = ghc_flags}
 
 newtype GHCiSession = GHCiSession
   { unGHCiSession :: GHC.Ghc () -> IO ()

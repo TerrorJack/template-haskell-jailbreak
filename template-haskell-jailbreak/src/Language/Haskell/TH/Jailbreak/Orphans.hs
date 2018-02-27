@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 module Language.Haskell.TH.Jailbreak.Orphans where
 
 import Data.Binary
